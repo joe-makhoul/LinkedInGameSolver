@@ -67,7 +67,7 @@ public class Grid {
             throw new IndexOutOfBoundsException();
         if (orientation.equals(EdgeOrientation.HORIZONTAL)) {
             horizontalEdges[row * (sideLength - 1) + column] = type;
-        } else {
+        } else if (orientation.equals(EdgeOrientation.VERTICAL)) {
             verticalEdges[row * (sideLength - 1) + column] = type;
         }
         return this;
