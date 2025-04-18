@@ -3,7 +3,7 @@ import java.util.Arrays;
 /**
  * Represents the game's grid
  */
-public class Grid {
+public final class Grid {
     private final CellType[] cells;
     private final EdgeType[] horizontalEdges;
     private final EdgeType[] verticalEdges;
@@ -28,10 +28,31 @@ public class Grid {
         this.sideLength = sideLength;
         cells = new CellType[sideLength * sideLength];
         Arrays.fill(cells, CellType.EMPTY);
-        horizontalEdges = new EdgeType[(sideLength - 1)*(sideLength - 1)];
+        horizontalEdges = new EdgeType[sideLength*(sideLength - 1)];
         Arrays.fill(horizontalEdges, EdgeType.NORMAL);
-        verticalEdges = new EdgeType[(sideLength - 1)*(sideLength - 1)];
+        verticalEdges = new EdgeType[sideLength*(sideLength - 1)];
         Arrays.fill(verticalEdges, EdgeType.NORMAL);
+    }
+
+    /**
+     * Returns the length of the grid's side
+     * @return the length of the grid's side
+     */
+    public int sideLength() {
+        return sideLength;
+    }
+
+    /**
+     * Checks if a cell is empty
+     * @param row (int) row index (0 included to side length excluded)
+     * @param column (int) column index (0 included to side length excluded)
+     * @return true if the cell of given coordinates is empty
+     * @throws IndexOutOfBoundsException if row or column index is out of bounds
+     */
+    public boolean isEmpty(int row, int column) {
+        if (row < 0 || row >= sideLength || column < 0 || column >= sideLength)
+            throw new IndexOutOfBoundsException();
+        return cells[row * sideLength + column].equals(CellType.EMPTY);
     }
 
     /**
@@ -52,6 +73,7 @@ public class Grid {
     /**
      * Adds an edge to the grid
      * @param type (EdgeType) edge's type (NORMAL, EQUALS, CROSS)
+     * @param orientation (EdgeOrientation) edge's orientation (HORIZONTAL or VERTICAL)
      * @param row (int) index of the row to its left or top
      *            (0 included to side length - 1 excluded)
      * @param column (int) index of the column to its left or top
@@ -66,7 +88,7 @@ public class Grid {
         if (row < 0 || row >= sideLength || column < 0 || column >= sideLength)
             throw new IndexOutOfBoundsException();
         if (orientation.equals(EdgeOrientation.HORIZONTAL)) {
-            horizontalEdges[row * (sideLength - 1) + column] = type;
+            horizontalEdges[column * (sideLength - 1) + row] = type;
         } else if (orientation.equals(EdgeOrientation.VERTICAL)) {
             verticalEdges[row * (sideLength - 1) + column] = type;
         }
@@ -97,10 +119,11 @@ public class Grid {
      */
     public boolean isValidColumn(int column) {
         CellType[] columnCells = new CellType[sideLength];
-        EdgeType[] columnEdges = new EdgeType[sideLength - 1];
+        EdgeType[] columnEdges = Arrays.copyOfRange(horizontalEdges,
+                column * (sideLength-1),
+                (column+1) * (sideLength-1));
         for (int i = 0; i < sideLength; ++i) {
             columnCells[i] = cells[i * sideLength + column];
-            columnEdges[i] = horizontalEdges[i * (sideLength-1) + column];
         }
         return hasValidCount(columnCells) && hasValidPositions(columnCells, columnEdges);
     }
@@ -124,6 +147,7 @@ public class Grid {
         for (CellType type : cells) {
             if (type.equals(CellType.SUN)) ++sunCount;
             else if (type.equals(CellType.MOON)) ++moonCount;
+            else return false;
         }
         return sunCount == moonCount;
     }
@@ -133,11 +157,42 @@ public class Grid {
         for (int i = 1; i < cells.length; ++i) {
             if (cells[i].equals(cells[i-1])) succeeding += 1;
             else succeeding = 1;
-            if (succeeding >= 3) return false;
+            if (succeeding >= sideLength/2) return false;
 
             if (edges[i-1].equals(EdgeType.EQUALS) & cells[i] != cells[i-1]
             || edges[i-1].equals(EdgeType.CROSS) && cells[i] == cells[i-1]) return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int row = 0; row < sideLength; ++row) {
+            for (int column = 0; column < sideLength; ++column) {
+                sb.append(String.format("%5s", cells[row*sideLength+column]));
+                if (column != sideLength - 1)
+                    sb.append(verticalEdges[row * (sideLength-1) + column]
+                            .toSymbol(EdgeOrientation.VERTICAL));
+            }
+            sb.append("\n");
+            if (row != sideLength - 1) {
+                for (int column = 0; column < sideLength; ++column) {
+                    sb.append(String.format("  %s   ", horizontalEdges[column * (sideLength-1) + row]
+                            .toSymbol(EdgeOrientation.HORIZONTAL)));
+                }
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        return that instanceof Grid
+                && sideLength == ((Grid) that).sideLength
+                && Arrays.equals(cells, ((Grid) that).cells)
+                && Arrays.equals(horizontalEdges, ((Grid) that).horizontalEdges)
+                && Arrays.equals(verticalEdges, ((Grid) that).verticalEdges);
     }
 }
