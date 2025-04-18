@@ -55,6 +55,10 @@ public final class Grid {
         return cells[row * sideLength + column].equals(CellType.EMPTY);
     }
 
+    public CellType getCell(int row, int column) {
+        return cells[row * sideLength + column];
+    }
+
     /**
      * Adds a cell to the grid
      * @param type (CellType) cell's type (EMPTY, SUN, MOON)
@@ -83,7 +87,8 @@ public final class Grid {
      * @throws IndexOutOfBoundsException if row or column index is out of bounds
      */
     public Grid addEdge(EdgeType type, EdgeOrientation orientation, int row, int column) {
-        if (row == sideLength - 1 || column == sideLength - 1)
+        if ((orientation.equals(EdgeOrientation.HORIZONTAL) && row == sideLength - 1)
+        || (orientation.equals(EdgeOrientation.VERTICAL) && column == sideLength - 1))
             throw new IllegalArgumentException("Outer edge type cannot be changed");
         if (row < 0 || row >= sideLength || column < 0 || column >= sideLength)
             throw new IndexOutOfBoundsException();
@@ -95,12 +100,39 @@ public final class Grid {
         return this;
     }
 
+    private boolean hasValidCount(CellType[] cells, boolean strict) {
+        int sunCount = 0, moonCount = 0;
+        for (CellType type : cells) {
+            if (type.equals(CellType.SUN)) ++sunCount;
+            else if (type.equals(CellType.MOON)) ++moonCount;
+            else if (strict) return false;
+        }
+        int limit = cells.length/2;
+        if (sunCount > limit || moonCount > limit) return false;
+        return !strict || (sunCount == limit && moonCount == limit);
+    }
+
+    private boolean hasValidPositions(CellType[] cells, EdgeType[] edges, boolean strict) {
+        int succeeding = 1;
+        for (int i = 1; i < cells.length; ++i) {
+            if (!strict & (cells[i] == CellType.EMPTY || cells[i-1] == CellType.EMPTY)) continue;
+            if (cells[i].equals(cells[i-1])) succeeding += 1;
+            else succeeding = 1;
+            if (succeeding >= cells.length/2) return false;
+
+            if (edges[i-1].equals(EdgeType.EQUALS) & cells[i] != cells[i-1]
+                    || edges[i-1].equals(EdgeType.CROSS) && cells[i] == cells[i-1]) return false;
+        }
+        return true;
+    }
+
     /**
      * Determines if row is valid
      * @param row (int) row index
+     * @param strict (boolean) true if finding empty cells returns false
      * @return true if row is valid
      */
-    public boolean isValidRow(int row) {
+    public boolean isValidRow(int row, boolean strict) {
         if (row < 0 || row >= sideLength)
             throw new IndexOutOfBoundsException();
         CellType[] rowCells = Arrays.copyOfRange(cells,
@@ -109,15 +141,17 @@ public final class Grid {
         EdgeType[] rowEdges = Arrays.copyOfRange(verticalEdges,
                 row * (sideLength-1),
                 (row+1) * (sideLength-1));
-        return hasValidCount(rowCells) && hasValidPositions(rowCells, rowEdges);
+        return hasValidCount(rowCells, strict)
+                && hasValidPositions(rowCells, rowEdges, strict);
     }
 
     /**
      * Determines if column is valid
      * @param column (int) column index
+     * @param strict (boolean) true if finding empty cells returns false
      * @return true if column is valid
      */
-    public boolean isValidColumn(int column) {
+    public boolean isValidColumn(int column, boolean strict) {
         CellType[] columnCells = new CellType[sideLength];
         EdgeType[] columnEdges = Arrays.copyOfRange(horizontalEdges,
                 column * (sideLength-1),
@@ -125,7 +159,8 @@ public final class Grid {
         for (int i = 0; i < sideLength; ++i) {
             columnCells[i] = cells[i * sideLength + column];
         }
-        return hasValidCount(columnCells) && hasValidPositions(columnCells, columnEdges);
+        return hasValidCount(columnCells, strict)
+                && hasValidPositions(columnCells, columnEdges, strict);
     }
 
     /**
@@ -134,33 +169,10 @@ public final class Grid {
      */
     public boolean isValidGrid() {
         for (int row = 0; row < sideLength; ++row) {
-            if (!isValidRow(row)) return false;
+            if (!isValidRow(row, true)) return false;
         }
         for (int column = 0; column < sideLength; ++column) {
-            if (!isValidColumn(column)) return false;
-        }
-        return true;
-    }
-
-    private boolean hasValidCount(CellType[] cells) {
-        int sunCount = 0, moonCount = 0;
-        for (CellType type : cells) {
-            if (type.equals(CellType.SUN)) ++sunCount;
-            else if (type.equals(CellType.MOON)) ++moonCount;
-            else return false;
-        }
-        return sunCount == moonCount;
-    }
-
-    private boolean hasValidPositions(CellType[] cells, EdgeType[] edges) {
-        int succeeding = 1;
-        for (int i = 1; i < cells.length; ++i) {
-            if (cells[i].equals(cells[i-1])) succeeding += 1;
-            else succeeding = 1;
-            if (succeeding >= sideLength/2) return false;
-
-            if (edges[i-1].equals(EdgeType.EQUALS) & cells[i] != cells[i-1]
-            || edges[i-1].equals(EdgeType.CROSS) && cells[i] == cells[i-1]) return false;
+            if (!isValidColumn(column, true)) return false;
         }
         return true;
     }
@@ -170,7 +182,7 @@ public final class Grid {
         StringBuilder sb = new StringBuilder();
         for (int row = 0; row < sideLength; ++row) {
             for (int column = 0; column < sideLength; ++column) {
-                sb.append(String.format("%5s", cells[row*sideLength+column]));
+                sb.append(String.format("%5s", cells[row * sideLength + column]));
                 if (column != sideLength - 1)
                     sb.append(verticalEdges[row * (sideLength-1) + column]
                             .toSymbol(EdgeOrientation.VERTICAL));
