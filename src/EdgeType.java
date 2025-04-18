@@ -15,9 +15,9 @@ public enum EdgeType {
      */
     CROSS;
 
-    public String toSymbol(EdgeOrientation orientation) {
+    public String getSymbol() {
         return switch (this) {
-            case NORMAL -> orientation == EdgeOrientation.HORIZONTAL ? "-" : "|";
+            case NORMAL -> "";
             case EQUALS -> "=";
             case CROSS -> "×";
         };

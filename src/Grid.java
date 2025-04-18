@@ -185,13 +185,13 @@ public final class Grid {
                 sb.append(String.format("%5s", cells[row * sideLength + column]));
                 if (column != sideLength - 1)
                     sb.append(verticalEdges[row * (sideLength-1) + column]
-                            .toSymbol(EdgeOrientation.VERTICAL));
+                            .getSymbol());
             }
             sb.append("\n");
             if (row != sideLength - 1) {
                 for (int column = 0; column < sideLength; ++column) {
                     sb.append(String.format("  %s   ", horizontalEdges[column * (sideLength-1) + row]
-                            .toSymbol(EdgeOrientation.HORIZONTAL)));
+                            .getSymbol()));
                 }
                 sb.append("\n");
             }
