@@ -24,9 +24,11 @@ public class TangoUI {
         Button[][] cells = new Button[sideLength][sideLength];
         Button[][] verticalEdges = new Button[sideLength][sideLength-1];
         Button[][] horizontalEdges = new Button[sideLength-1][sideLength];
-        createCells(gridPane, grid, cells);
-        createEdges(gridPane, grid, verticalEdges, EdgeOrientation.VERTICAL);
-        createEdges(gridPane, grid, horizontalEdges, EdgeOrientation.HORIZONTAL);
+        CellType[][] cellTypes = createCells(gridPane, grid, cells);
+        EdgeType[][] verticalEdgeTypes =
+                createEdges(gridPane, grid, verticalEdges, EdgeOrientation.VERTICAL);
+        EdgeType[][] horizontalEdgeTypes =
+                createEdges(gridPane, grid, horizontalEdges, EdgeOrientation.HORIZONTAL);
 
         Button solve = new Button("Solve grid");
         solve.setStyle("-fx-font-size: 24px; -fx-padding: 8 16; -fx-;" +
@@ -60,6 +62,15 @@ public class TangoUI {
                     }
                 }
             }
+            for (CellType[] cellType : cellTypes) {
+                cellType[0] = CellType.EMPTY;
+            }
+            for (EdgeType[] edgeType : verticalEdgeTypes) {
+                edgeType[0] = EdgeType.NORMAL;
+            }
+            for (EdgeType[] edgeType : horizontalEdgeTypes) {
+                edgeType[0] = EdgeType.NORMAL;
+            }
         });
 
         HBox buttonBox = new HBox(40);
@@ -70,7 +81,7 @@ public class TangoUI {
         StackPane centerPane = new StackPane(gridPane);
         centerPane.setPadding(new Insets(20));
 
-        Label titleLabel = new Label("LinkedIn Tango solver_app.Solver");
+        Label titleLabel = new Label("LinkedIn Tango Solver");
         titleLabel.setStyle("-fx-font-size: 54px; -fx-font-weight: bold; -fx-text-fill: slategray;");
 
         VBox titleBox = new VBox(titleLabel);
@@ -91,7 +102,8 @@ public class TangoUI {
         return EdgeType.values()[(e.ordinal() + 1) % EdgeType.values().length];
     }
 
-    private static void createCells(GridPane gridPane, TangoGrid grid, Button[][] cells) {
+    private static CellType[][] createCells(GridPane gridPane, TangoGrid grid, Button[][] cells) {
+        CellType[][] cellTypes = new CellType[cells[0].length * cells[0].length][];
         for (int row = 0; row < cells[0].length; ++row) {
             for (int column = 0; column < cells[0].length; ++column) {
                 final CellType[] cellType = {CellType.EMPTY};
@@ -109,12 +121,15 @@ public class TangoUI {
                 });
                 gridPane.add(cell, column*2, row*2);
                 cells[row][column] = cell;
+                cellTypes[row * cells[0].length + column] = cellType;
             }
         }
+        return cellTypes;
     }
 
-    private static void createEdges(GridPane gridPane, TangoGrid grid,
+    private static EdgeType[][] createEdges(GridPane gridPane, TangoGrid grid,
                                     Button[][] edges, EdgeOrientation orientation) {
+        EdgeType[][] edgeTypes = new EdgeType[edges.length * edges[0].length][];
         for (int row = 0; row < edges.length; ++row) {
             for (int column = 0; column < edges[0].length; ++column) {
                 final EdgeType[] edgeType = {EdgeType.NORMAL};
@@ -141,7 +156,9 @@ public class TangoUI {
                         orientation.equals(EdgeOrientation.HORIZONTAL) ?
                                 row*2+1 : row*2);
                 edges[row][column] = edge;
+                edgeTypes[row * (edges.length-1) + column] = edgeType;
             }
         }
+        return edgeTypes;
     }
 }
