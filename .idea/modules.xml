@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TangoSolver.iml" filepath="$PROJECT_DIR$/TangoSolver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LinkedInGameSolver.iml" filepath="$PROJECT_DIR$/LinkedInGameSolver.iml" />
     </modules>
   </component>
 </project>
