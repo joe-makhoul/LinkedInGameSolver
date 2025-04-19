@@ -1,3 +1,5 @@
+package solver_app.tango;
+
 /**
  * Orientation of an edge
  */

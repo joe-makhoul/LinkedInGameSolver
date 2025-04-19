@@ -1,3 +1,8 @@
+package solver_app;
+
+import solver_app.tango.CellType;
+import solver_app.tango.TangoGrid;
+
 /**
  * Class that contains the solver's algorithm
  */
@@ -9,7 +14,7 @@ public final class Solver {
      * @param grid (Grid) grid to be solved
      * @return true if the grid is solved
      */
-    public static boolean solve(Grid grid) {
+    public static boolean solve(TangoGrid grid) {
         int sideLength = grid.sideLength();
         for (int row = 0; row < sideLength; ++row) {
             for (int column = 0; column < sideLength; ++column) {

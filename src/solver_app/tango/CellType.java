@@ -1,3 +1,5 @@
+package solver_app.tango;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 

@@ -1,9 +1,11 @@
+package solver_app.tango;
+
 import java.util.Arrays;
 
 /**
  * Represents the game's grid
  */
-public final class Grid {
+public final class TangoGrid {
     private final CellType[] cells;
     private final EdgeType[] horizontalEdges;
     private final EdgeType[] verticalEdges;
@@ -12,7 +14,7 @@ public final class Grid {
     /**
      * Creates square grid of default side length 6
      */
-    public Grid() {
+    public TangoGrid() {
         this(6);
     }
 
@@ -21,7 +23,7 @@ public final class Grid {
      * @param sideLength (int) the grid's side length
      * @throws IllegalArgumentException for odd or negative side length
      */
-    public Grid(int sideLength) {
+    public TangoGrid(int sideLength) {
         if (sideLength < 0 || sideLength % 2 != 0) {
             throw new IllegalArgumentException("Size should be positive and even");
         }
@@ -61,13 +63,13 @@ public final class Grid {
 
     /**
      * Adds a cell to the grid
-     * @param type (CellType) cell's type (EMPTY, SUN, MOON)
+     * @param type (solver_app.tango.CellType) cell's type (EMPTY, SUN, MOON)
      * @param row (int) row index (0 included to side length excluded)
      * @param column (int) column index (0 included to side length excluded)
      * @return the current instance of the grid
      * @throws IndexOutOfBoundsException if row or column index is out of bounds
      */
-    public Grid addCell(CellType type, int row, int column) {
+    public TangoGrid addCell(CellType type, int row, int column) {
         if (row < 0 || row >= sideLength || column < 0 || column >= sideLength)
             throw new IndexOutOfBoundsException();
         cells[row * sideLength + column] = type;
@@ -76,8 +78,8 @@ public final class Grid {
 
     /**
      * Adds an edge to the grid
-     * @param type (EdgeType) edge's type (NORMAL, EQUALS, CROSS)
-     * @param orientation (EdgeOrientation) edge's orientation (HORIZONTAL or VERTICAL)
+     * @param type (solver_app.tango.EdgeType) edge's type (NORMAL, EQUALS, CROSS)
+     * @param orientation (solver_app.tango.EdgeOrientation) edge's orientation (HORIZONTAL or VERTICAL)
      * @param row (int) index of the row to its left or top
      *            (0 included to side length - 1 excluded)
      * @param column (int) index of the column to its left or top
@@ -86,7 +88,7 @@ public final class Grid {
      * @throws IllegalArgumentException if row and column indices correspond to an outer edge
      * @throws IndexOutOfBoundsException if row or column index is out of bounds
      */
-    public Grid addEdge(EdgeType type, EdgeOrientation orientation, int row, int column) {
+    public TangoGrid addEdge(EdgeType type, EdgeOrientation orientation, int row, int column) {
         if ((orientation.equals(EdgeOrientation.HORIZONTAL) && row == sideLength - 1)
         || (orientation.equals(EdgeOrientation.VERTICAL) && column == sideLength - 1))
             throw new IllegalArgumentException("Outer edge type cannot be changed");
@@ -201,10 +203,10 @@ public final class Grid {
 
     @Override
     public boolean equals(Object that) {
-        return that instanceof Grid
-                && sideLength == ((Grid) that).sideLength
-                && Arrays.equals(cells, ((Grid) that).cells)
-                && Arrays.equals(horizontalEdges, ((Grid) that).horizontalEdges)
-                && Arrays.equals(verticalEdges, ((Grid) that).verticalEdges);
+        return that instanceof TangoGrid
+                && sideLength == ((TangoGrid) that).sideLength
+                && Arrays.equals(cells, ((TangoGrid) that).cells)
+                && Arrays.equals(horizontalEdges, ((TangoGrid) that).horizontalEdges)
+                && Arrays.equals(verticalEdges, ((TangoGrid) that).verticalEdges);
     }
 }

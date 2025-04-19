@@ -1,26 +1,25 @@
-import javafx.application.Application;
+package solver_app.gui;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
+import solver_app.Solver;
+import solver_app.tango.CellType;
+import solver_app.tango.EdgeOrientation;
+import solver_app.tango.EdgeType;
+import solver_app.tango.TangoGrid;
 
-public class SolverApp extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
+public class TangoUI {
+    private TangoUI() {}
+    public static BorderPane tangoPane() {
         BorderPane main = new BorderPane();
         main.setPadding(new Insets(20));
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
-        Grid grid = new Grid();
+        TangoGrid grid = new TangoGrid();
         int sideLength = grid.sideLength();
         Button[][] cells = new Button[sideLength][sideLength];
         Button[][] verticalEdges = new Button[sideLength][sideLength-1];
@@ -71,7 +70,7 @@ public class SolverApp extends Application {
         StackPane centerPane = new StackPane(gridPane);
         centerPane.setPadding(new Insets(20));
 
-        Label titleLabel = new Label("LinkedIn Tango Solver");
+        Label titleLabel = new Label("LinkedIn Tango solver_app.Solver");
         titleLabel.setStyle("-fx-font-size: 54px; -fx-font-weight: bold; -fx-text-fill: slategray;");
 
         VBox titleBox = new VBox(titleLabel);
@@ -81,11 +80,7 @@ public class SolverApp extends Application {
         main.setTop(titleBox);
         main.setCenter(centerPane);
         main.setBottom(buttonBox);
-
-        Scene scene = new Scene(main, 800, 800);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        return main;
     }
 
     private static CellType switchType(CellType c) {
@@ -96,7 +91,7 @@ public class SolverApp extends Application {
         return EdgeType.values()[(e.ordinal() + 1) % EdgeType.values().length];
     }
 
-    private static void createCells(GridPane gridPane, Grid grid, Button[][] cells) {
+    private static void createCells(GridPane gridPane, TangoGrid grid, Button[][] cells) {
         for (int row = 0; row < cells[0].length; ++row) {
             for (int column = 0; column < cells[0].length; ++column) {
                 final CellType[] cellType = {CellType.EMPTY};
@@ -118,7 +113,7 @@ public class SolverApp extends Application {
         }
     }
 
-    private static void createEdges(GridPane gridPane, Grid grid,
+    private static void createEdges(GridPane gridPane, TangoGrid grid,
                                     Button[][] edges, EdgeOrientation orientation) {
         for (int row = 0; row < edges.length; ++row) {
             for (int column = 0; column < edges[0].length; ++column) {

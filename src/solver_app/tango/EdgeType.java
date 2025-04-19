@@ -1,3 +1,5 @@
+package solver_app.tango;
+
 /**
  * Types of grid edges
  */
