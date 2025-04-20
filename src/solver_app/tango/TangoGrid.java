@@ -63,32 +63,31 @@ public final class TangoGrid {
 
     /**
      * Adds a cell to the grid
-     * @param type (solver_app.tango.CellType) cell's type (EMPTY, SUN, MOON)
-     * @param row (int) row index (0 included to side length excluded)
+     *
+     * @param type   (solver_app.tango.CellType) cell's type (EMPTY, SUN, MOON)
+     * @param row    (int) row index (0 included to side length excluded)
      * @param column (int) column index (0 included to side length excluded)
-     * @return the current instance of the grid
      * @throws IndexOutOfBoundsException if row or column index is out of bounds
      */
-    public TangoGrid addCell(CellType type, int row, int column) {
+    public void addCell(CellType type, int row, int column) {
         if (row < 0 || row >= sideLength || column < 0 || column >= sideLength)
             throw new IndexOutOfBoundsException();
         cells[row * sideLength + column] = type;
-        return this;
     }
 
     /**
      * Adds an edge to the grid
-     * @param type (solver_app.tango.EdgeType) edge's type (NORMAL, EQUALS, CROSS)
+     *
+     * @param type        (solver_app.tango.EdgeType) edge's type (NORMAL, EQUALS, CROSS)
      * @param orientation (solver_app.tango.EdgeOrientation) edge's orientation (HORIZONTAL or VERTICAL)
-     * @param row (int) index of the row to its left or top
-     *            (0 included to side length - 1 excluded)
-     * @param column (int) index of the column to its left or top
-     *               (0 included to side length - 1excluded)
-     * @return the current instance of the grid
-     * @throws IllegalArgumentException if row and column indices correspond to an outer edge
+     * @param row         (int) index of the row to its left or top
+     *                    (0 included to side length - 1 excluded)
+     * @param column      (int) index of the column to its left or top
+     *                    (0 included to side length - 1excluded)
+     * @throws IllegalArgumentException  if row and column indices correspond to an outer edge
      * @throws IndexOutOfBoundsException if row or column index is out of bounds
      */
-    public TangoGrid addEdge(EdgeType type, EdgeOrientation orientation, int row, int column) {
+    public void addEdge(EdgeType type, EdgeOrientation orientation, int row, int column) {
         if ((orientation.equals(EdgeOrientation.HORIZONTAL) && row == sideLength - 1)
         || (orientation.equals(EdgeOrientation.VERTICAL) && column == sideLength - 1))
             throw new IllegalArgumentException("Outer edge type cannot be changed");
@@ -99,7 +98,6 @@ public final class TangoGrid {
         } else if (orientation.equals(EdgeOrientation.VERTICAL)) {
             verticalEdges[row * (sideLength - 1) + column] = type;
         }
-        return this;
     }
 
     private boolean hasValidCount(CellType[] cells, boolean strict) {

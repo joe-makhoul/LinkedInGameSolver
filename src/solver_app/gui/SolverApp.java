@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class SolverApp extends Application {
+public final class SolverApp extends Application {
 
     public static void main(String[] args) {
         launch(args);

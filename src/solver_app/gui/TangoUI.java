@@ -11,7 +11,7 @@ import solver_app.tango.EdgeOrientation;
 import solver_app.tango.EdgeType;
 import solver_app.tango.TangoGrid;
 
-public class TangoUI {
+public final class TangoUI {
     private TangoUI() {}
     public static BorderPane tangoPane() {
         BorderPane main = new BorderPane();
