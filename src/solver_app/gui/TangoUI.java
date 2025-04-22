@@ -31,7 +31,7 @@ public final class TangoUI {
                 createEdges(gridPane, grid, horizontalEdges, EdgeOrientation.HORIZONTAL);
 
         Button solve = new Button("Solve grid");
-        solve.setStyle("-fx-font-size: 24px; -fx-padding: 8, 16; " +
+        solve.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
                 "-fx-background-color: slategray; -fx-text-fill: snow");
         solve.setOnAction(event -> {
             Solver.solve(grid);
@@ -43,7 +43,7 @@ public final class TangoUI {
         });
 
         Button clear = new Button("Clear grid");
-        clear.setStyle("-fx-font-size: 24px; -fx-padding: 8, 16; " +
+        clear.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
                 "-fx-background-color: slategray; -fx-text-fill: snow");
         clear.setOnAction(event -> {
             for (int row = 0; row < sideLength; ++row) {

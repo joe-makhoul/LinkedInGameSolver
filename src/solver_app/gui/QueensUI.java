@@ -7,13 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.*;
 
+
 public final class QueensUI {
     private final static int BASE_LENGTH = 420;
     private QueensUI() {}
 
     public static BorderPane queensBoard() {
         BorderPane main = new BorderPane();
-        main.setStyle("-fx-background-color: #F5F0FF;");  // Soft Lavender
+        main.setStyle("-fx-background-color: lavender;");
 
         BorderPane game = new BorderPane();
         game.setPadding(new Insets(20));
@@ -24,7 +25,8 @@ public final class QueensUI {
         game.setCenter(board);
 
         Label titleLabel = new Label("LinkedIn Queens Solver");
-        titleLabel.setStyle("-fx-font-size: 54px; -fx-font-weight: bold; -fx-text-fill: #6A0DAD;");  // Deep Purple
+        titleLabel.setStyle("-fx-font-size: 54px; -fx-font-weight: bold; " +
+                "-fx-text-fill: slateblue;");
 
         VBox titleBox = new VBox(titleLabel);
         titleBox.setAlignment(Pos.CENTER);
@@ -33,19 +35,34 @@ public final class QueensUI {
         VBox spinnerBox = createSideLengthSetter(board, game);
         StackPane stack = new StackPane(spinnerBox, game);
 
+        Button pickColor = new Button("Color cells");
+        pickColor.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
+                "-fx-background-color: slateblue; -fx-text-fill: white;");
+
+        Button changeSize = new Button("Change size");
+        changeSize.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
+                "-fx-background-color: slateblue; -fx-text-fill: white;");
+
         Button solve = new Button("Solve grid");
-        solve.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8, 16; " +
-                "-fx-background-color: #9B59B6; -fx-text-fill: white;");  // Soft Violet
+        solve.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
+                "-fx-background-color: slateblue; -fx-text-fill: white;");
 
         Button clear = new Button("Clear grid");
-        clear.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8, 16; " +
-                "-fx-background-color: #9B59B6; -fx-text-fill: white;");
+        clear.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
+                "-fx-background-color: slateblue; -fx-text-fill: white;");
 
-        HBox gameButtonBox = new HBox(40);
+        VBox gameButtonBox = new VBox(20);
         gameButtonBox.setAlignment(Pos.CENTER);
-        gameButtonBox.setPadding(new Insets(0, 0, 20, 0));
-        gameButtonBox.getChildren().addAll(solve, clear);
+
+        HBox firstRow = new HBox(30, pickColor, solve);
+        firstRow.setAlignment(Pos.CENTER);
+
+        HBox secondRow = new HBox(30, changeSize, clear);
+        secondRow.setAlignment(Pos.CENTER);
+
+        gameButtonBox.getChildren().addAll(firstRow, secondRow);
         game.setBottom(gameButtonBox);
+        BorderPane.setAlignment(gameButtonBox, Pos.CENTER);
 
         main.setTop(titleBox);
         main.setCenter(stack);
@@ -58,25 +75,26 @@ public final class QueensUI {
         spinnerBox.setAlignment(Pos.TOP_CENTER);
 
         Label titleSpinner = new Label("Board's side length");
-        titleSpinner.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #6A0DAD;");
+        titleSpinner.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: slateblue;");
         titleSpinner.setAlignment(Pos.CENTER);
 
         Spinner<Integer> spinner = new Spinner<>(5, 11, 8);
         spinner.setStyle(
-                "-fx-border-color: #A569BD; -fx-border-width: 4px; -fx-border-radius: 5px;" +  // Medium Purple
+                "-fx-border-color: slateblue; -fx-border-width: 4px; -fx-border-radius: 5px;" +
                         "-fx-background-radius: 5px;"
         );
         spinner.getEditor().setStyle(
-                "-fx-background-color: white; -fx-font-size: 28px; -fx-font-weight: bold;" +
-                        "-fx-text-fill: #6A0DAD;"
+                "-fx-background-color: mediumpurple; -fx-font-size: 28px; -fx-font-weight: bold;" +
+                        "-fx-text-fill: snow;"
         );
+
+        spinner.getEditor().setAlignment(Pos.CENTER);
 
         Button spinnerButton = new Button("Confirm size");
         spinnerButton.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
-                "-fx-background-color: #9B59B6; -fx-text-fill: white;");
+                "-fx-background-color: slateblue; -fx-text-fill: white;");
         spinnerButton.setOnAction(event -> {
             createCells(board, spinner.getValue());
-            spinnerBox.setVisible(false);
             game.setVisible(true);
         });
 
@@ -92,13 +110,12 @@ public final class QueensUI {
     private static void createCells(GridPane gridPane, int sideLength) {
         for (int row = 0; row < sideLength; ++row) {
             for (int column = 0; column < sideLength; ++column) {
-                final int[] color = {0};
                 Button cell = new Button();
                 cell.setMinSize((double) BASE_LENGTH / sideLength,
-                        (double) BASE_LENGTH /sideLength);
+                        (double) BASE_LENGTH / sideLength);
                 cell.setMaxSize((double) BASE_LENGTH / sideLength,
                         (double) BASE_LENGTH / sideLength);
-                cell.setStyle("-fx-background-color: white; -fx-border-color: lightgray;");
+                cell.setStyle("-fx-background-color: snow; -fx-border-color: lavender;");
                 gridPane.add(cell, column, row);
             }
         }
