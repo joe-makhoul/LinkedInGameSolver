@@ -29,7 +29,7 @@ public enum CellType {
                 return new Circle(10, Color.ORANGE);
             }
             case MOON -> {
-                return new Circle(10, Color.DARKBLUE);
+                return new Circle(10, Color.STEELBLUE);
             }
         }
         return new Circle();

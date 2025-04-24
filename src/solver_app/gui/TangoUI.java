@@ -16,6 +16,7 @@ public final class TangoUI {
     public static BorderPane tangoPane() {
         BorderPane main = new BorderPane();
         main.setPadding(new Insets(20));
+        main.getStyleClass().add("root-tango");
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -31,8 +32,7 @@ public final class TangoUI {
                 createEdges(gridPane, grid, horizontalEdges, EdgeOrientation.HORIZONTAL);
 
         Button solve = new Button("Solve grid");
-        solve.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
-                "-fx-background-color: slategray; -fx-text-fill: snow");
+        solve.getStyleClass().add("button-tango");
         solve.setOnAction(event -> {
             Solver.solve(grid);
             for (int row = 0; row < sideLength; ++row) {
@@ -43,8 +43,7 @@ public final class TangoUI {
         });
 
         Button clear = new Button("Clear grid");
-        clear.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
-                "-fx-background-color: slategray; -fx-text-fill: snow");
+        clear.getStyleClass().add("button-tango");
         clear.setOnAction(event -> {
             for (int row = 0; row < sideLength; ++row) {
                 for (int column = 0; column < sideLength; ++column) {
@@ -82,7 +81,7 @@ public final class TangoUI {
         centerPane.setPadding(new Insets(20));
 
         Label titleLabel = new Label("LinkedIn Tango Solver");
-        titleLabel.setStyle("-fx-font-size: 54px; -fx-font-weight: bold; -fx-text-fill: slategray;");
+        titleLabel.getStyleClass().add("title-label-tango");
 
         VBox titleBox = new VBox(titleLabel);
         titleBox.setAlignment(Pos.CENTER);
@@ -111,7 +110,7 @@ public final class TangoUI {
                 cell.setGraphic(cellType[0].getSymbol());
                 cell.setMinSize(50,50);
                 cell.setMaxSize(50,50);
-                cell.setStyle("-fx-background-color: white; -fx-border-color: lightgray;");
+                cell.getStyleClass().add("cell-tango");
                 int finalColumn = column;
                 int finalRow = row;
                 cell.setOnAction(event -> {
@@ -142,7 +141,7 @@ public final class TangoUI {
                     edge.setMinSize(50,30);
                     edge.setMaxSize(50,30);
                 }
-                edge.setStyle("-fx-background-color: transparent; -fx-border-color: transparent");
+                edge.getStyleClass().add("edge-tango");
                 int finalColumn = column;
                 int finalRow = row;
                 edge.setOnAction(event -> {

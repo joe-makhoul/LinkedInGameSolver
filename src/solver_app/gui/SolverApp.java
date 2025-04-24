@@ -13,10 +13,18 @@ public final class SolverApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        //BorderPane tango = solver_app.gui.TangoUI.tangoPane();
+        BorderPane tango = solver_app.gui.TangoUI.tangoPane();
         BorderPane queens = solver_app.gui.QueensUI.queensBoard();
-        //StackPane stackPane = new StackPane(tango);
-        Scene scene = new Scene(queens, 1920, 1080);
+        StackPane stack = new StackPane(tango, queens);
+
+        Scene scene = new Scene(stack, 1920, 1080);
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case Q -> queens.toFront();
+                case T -> tango.toFront();
+            }
+        });
+        scene.getStylesheets().add("solver-style.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

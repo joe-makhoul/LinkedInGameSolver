@@ -15,7 +15,8 @@ public final class QueensUI {
 
     public static BorderPane queensBoard() {
         BorderPane main = new BorderPane();
-        main.setStyle("-fx-background-color: lavender;");
+        main.setPadding(new Insets(20));
+        main.getStyleClass().add("root-queens");
 
         BorderPane game = new BorderPane();
         game.setPadding(new Insets(20));
@@ -26,8 +27,7 @@ public final class QueensUI {
         game.setCenter(board);
 
         Label titleLabel = new Label("LinkedIn Queens Solver");
-        titleLabel.setStyle("-fx-font-size: 54px; -fx-font-weight: bold; " +
-                "-fx-text-fill: slateblue;");
+        titleLabel.getStyleClass().add("title-label-queens");
 
         VBox titleBox = new VBox(titleLabel);
         titleBox.setAlignment(Pos.CENTER);
@@ -37,14 +37,12 @@ public final class QueensUI {
         StackPane stack = new StackPane(spinnerBox, game);
 
         ColorPicker pickColor = new ColorPicker();
-        pickColor.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; " +
-                "-fx-background-color: slateblue; -fx-text-fill: white;");
+        pickColor.getStyleClass().add("color-picker");
 
 
 
         Button changeSize = new Button("Change size");
-        changeSize.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
-                "-fx-background-color: slateblue; -fx-text-fill: white;");
+        changeSize.getStyleClass().add("button-queens");
         changeSize.setOnAction(event ->
         {
             board.getChildren().clear();
@@ -53,12 +51,10 @@ public final class QueensUI {
         });
 
         Button solve = new Button("Solve grid");
-        solve.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
-                "-fx-background-color: slateblue; -fx-text-fill: white;");
+        solve.getStyleClass().add("button-queens");
 
         Button clear = new Button("Clear grid");
-        clear.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
-                "-fx-background-color: slateblue; -fx-text-fill: white;");
+        clear.getStyleClass().add("button-queens");
 
         VBox gameButtonBox = new VBox(20);
         gameButtonBox.setAlignment(Pos.CENTER);
@@ -84,24 +80,15 @@ public final class QueensUI {
         spinnerBox.setAlignment(Pos.TOP_CENTER);
 
         Label titleSpinner = new Label("Board's side length");
-        titleSpinner.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: slateblue;");
+        titleSpinner.getStyleClass().add("title-spinner");
         titleSpinner.setAlignment(Pos.CENTER);
 
         Spinner<Integer> spinner = new Spinner<>(5, 11, 8);
-        spinner.setStyle(
-                "-fx-border-color: slateblue; -fx-border-width: 4px; -fx-border-radius: 5px;" +
-                        "-fx-background-radius: 5px;"
-        );
-        spinner.getEditor().setStyle(
-                "-fx-background-color: mediumpurple; -fx-font-size: 28px; -fx-font-weight: bold;" +
-                        "-fx-text-fill: snow;"
-        );
-
+        spinner.getStyleClass().add("spinner");
         spinner.getEditor().setAlignment(Pos.CENTER);
 
         Button spinnerButton = new Button("Confirm size");
-        spinnerButton.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
-                "-fx-background-color: slateblue; -fx-text-fill: white;");
+        spinnerButton.getStyleClass().add("button-queens");
         spinnerButton.setOnAction(event -> {
             createCells(board, spinner.getValue());
             game.setVisible(true);
@@ -124,7 +111,7 @@ public final class QueensUI {
                         (double) BASE_LENGTH / sideLength);
                 cell.setMaxSize((double) BASE_LENGTH / sideLength,
                         (double) BASE_LENGTH / sideLength);
-                cell.setStyle("-fx-background-color: snow; -fx-border-color: lavender;");
+                cell.getStyleClass().add("cell-tango");
                 gridPane.add(cell, column, row);
             }
         }
