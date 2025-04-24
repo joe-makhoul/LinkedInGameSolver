@@ -16,7 +16,7 @@ public final class SolverApp extends Application {
         //BorderPane tango = solver_app.gui.TangoUI.tangoPane();
         BorderPane queens = solver_app.gui.QueensUI.queensBoard();
         //StackPane stackPane = new StackPane(tango);
-        Scene scene = new Scene(queens, 800, 800);
+        Scene scene = new Scene(queens, 1920, 1080);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -3,6 +3,7 @@ package solver_app.gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.*;
@@ -35,13 +36,21 @@ public final class QueensUI {
         VBox spinnerBox = createSideLengthSetter(board, game);
         StackPane stack = new StackPane(spinnerBox, game);
 
-        Button pickColor = new Button("Color cells");
-        pickColor.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
+        ColorPicker pickColor = new ColorPicker();
+        pickColor.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; " +
                 "-fx-background-color: slateblue; -fx-text-fill: white;");
+
+
 
         Button changeSize = new Button("Change size");
         changeSize.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
                 "-fx-background-color: slateblue; -fx-text-fill: white;");
+        changeSize.setOnAction(event ->
+        {
+            board.getChildren().clear();
+            game.setVisible(false);
+            spinnerBox.setVisible(true);
+        });
 
         Button solve = new Button("Solve grid");
         solve.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 8 16; " +
