@@ -1,0 +1,85 @@
+/* General Backgrounds */
+.root-queens {
+    -fx-background-color: lavender;
+}
+
+.root-tango {
+    -fx-background-color: aliceblue;
+}
+
+/* Title Labels */
+.title-label-queens {
+    -fx-font-size: 54px;
+    -fx-font-weight: bold;
+    -fx-text-fill: darkslateblue;
+}
+
+.title-label-tango {
+    -fx-font-size: 54px;
+    -fx-font-weight: bold;
+    -fx-text-fill: slategray;
+}
+
+.title-spinner {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: darkslateblue;
+}
+
+/* Buttons */
+.button-queens {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16;
+    -fx-background-color: darkslateblue;
+    -fx-text-fill: white;
+}
+
+.button-tango {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16;
+    -fx-background-color: slategray;
+    -fx-text-fill: snow;
+}
+
+.cell-queens {
+    -fx-background-color: snow;
+    -fx-border-color: lavender;
+}
+
+.cell-tango {
+    -fx-background-color: white;
+    -fx-border-color: lightgray;
+}
+
+.edge-tango {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Spinner */
+.spinner {
+    -fx-border-color: darkslateblue;
+    -fx-border-width: 4px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.spinner .text-field {
+    -fx-background-color: mediumpurple;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: snow;
+}
+
+/* ColorPicker */
+.color-picker {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-background-color: darkslateblue;
+}
+
+.color-picker > .label {
+    -fx-text-fill: white;
+}
