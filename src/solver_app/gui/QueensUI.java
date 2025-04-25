@@ -9,6 +9,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import solver_app.Solver;
 import solver_app.queens.QueensBoard;
 
@@ -98,8 +99,6 @@ public final class QueensUI {
 
         Button solve = new Button("Solve grid");
         solve.getStyleClass().add("button-queens");
-        Label crownLabel = new Label("\uD83D\uDC51"); // Crown emoji
-        crownLabel.setStyle("-fx-font-size: 24px;");
         solve.setOnAction(event -> {
             Solver.solve(boardContainer.board);
             System.out.println(boardContainer.board);
@@ -107,7 +106,7 @@ public final class QueensUI {
             for (int row = 0; row < sideLength; ++row) {
                 for (int column = 0; column < sideLength; ++column) {
                     if (boardContainer.board.isOccupied(row, column))
-                        boardContainer.cells[row][column].setGraphic(crownLabel);
+                        boardContainer.cells[row][column].setGraphic(new Rectangle(7,7));
                 }
             }
         });
