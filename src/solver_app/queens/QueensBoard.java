@@ -1,7 +1,5 @@
 package solver_app.queens;
 
-import javafx.util.Pair;
-
 import java.util.*;
 
 public final class QueensBoard {
@@ -14,13 +12,6 @@ public final class QueensBoard {
         this.colors = new int[sideLength * sideLength];
         Arrays.fill(colors, 0);
         this.queens = new boolean[sideLength * sideLength];
-        Arrays.fill(queens, false);
-    }
-
-    public QueensBoard(int... ints) {
-        sideLength = 9;
-        colors = ints;
-        queens = new boolean[81];
         Arrays.fill(queens, false);
     }
 
