@@ -44,7 +44,7 @@
 }
 
 .cell-queens {
-    -fx-background-color: snow;
+    -fx-background-color: white;
     -fx-border-color: lavender;
 }
 

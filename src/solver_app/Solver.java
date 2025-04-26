@@ -35,20 +35,26 @@ public final class Solver {
         return grid.isValidGrid();
     }
 
-    public static boolean solve(QueensBoard board) {
+    public static void solve(QueensBoard board) {
+        solveByColor(board, 1);
+    }
+
+    private static boolean solveByColor(QueensBoard board, int color) {
         int sideLength = board.sideLength();
-        for (int row = 0; row < sideLength; ++row) {
-            for (int column = 0; column < sideLength; ++column) {
-                if (!board.isOccupied(row, column)) {
-                    if (board.isValidPlacement(row, column)) {
-                        board.addQueen(row, column);
-                        if (solve(board)) return true;
-                        board.removeQueen(row, column);
-                        return false;
-                    }
+        if (color > sideLength) {
+            return board.isValidBoard();
+        }
+        for (int[] coord : board.getCoordsByColor().get(color)) {
+            int row = coord[0];
+            int column = coord[1];
+            if (!board.isOccupied(row, column)) {
+                if (board.isValidPlacement(row, column)) {
+                    board.addQueen(row, column);
+                    if (solveByColor(board, color+1)) return true;
+                    board.removeQueen(row, column);
                 }
             }
         }
-        return board.isValidBoard();
+        return false;
     }
 }

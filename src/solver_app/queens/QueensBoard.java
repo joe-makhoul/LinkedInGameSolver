@@ -1,6 +1,8 @@
 package solver_app.queens;
 
-import java.util.Arrays;
+import javafx.util.Pair;
+
+import java.util.*;
 
 public final class QueensBoard {
     private final int sideLength;
@@ -15,6 +17,13 @@ public final class QueensBoard {
         Arrays.fill(queens, false);
     }
 
+    public QueensBoard(int... ints) {
+        sideLength = 9;
+        colors = ints;
+        queens = new boolean[81];
+        Arrays.fill(queens, false);
+    }
+
     public int sideLength() {
         return sideLength;
     }
@@ -23,6 +32,18 @@ public final class QueensBoard {
         return queens[row * sideLength + column];
     }
 
+    public List<List<int[]>> getCoordsByColor() {
+        List<List<int[]>> coords = new ArrayList<>(sideLength);
+        for (int i = 0; i < sideLength+2; ++i) {
+            coords.add(new ArrayList<>());
+        }
+        for (int row = 0; row < sideLength; ++row) {
+            for (int column = 0; column < sideLength; ++column) {
+                coords.get(colors[row * sideLength + column]).add(new int[] {row, column});
+            }
+        }
+        return coords;
+    }
 
     public void addColor(int i, int row, int column) {
         colors[row * sideLength + column] = i;
@@ -56,14 +77,19 @@ public final class QueensBoard {
         return true;
     }
 
+    public void clear() {
+        Arrays.fill(colors, 0);
+        Arrays.fill(queens, false);
+    }
+
     private boolean isValidForColor(int row, int column) {
         int color = colors[row * sideLength + column];
         if (color == 0) return false;
 
         for (int r = 0; r < sideLength; ++r) {
             for (int c = 0; c < sideLength; ++c) {
-                if ((r != row || c != column) &&
-                        queens[r * sideLength + c] &&
+                if (!(r == row && c == column) &&
+                        isOccupied(r,c) &&
                         colors[r * sideLength + c] == color) {
                     return false;
                 }

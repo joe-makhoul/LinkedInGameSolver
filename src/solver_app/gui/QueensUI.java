@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import solver_app.Solver;
 import solver_app.queens.QueensBoard;
@@ -101,7 +100,6 @@ public final class QueensUI {
         solve.getStyleClass().add("button-queens");
         solve.setOnAction(event -> {
             Solver.solve(boardContainer.board);
-            System.out.println(boardContainer.board);
             int sideLength = boardContainer.board.sideLength();
             for (int row = 0; row < sideLength; ++row) {
                 for (int column = 0; column < sideLength; ++column) {
@@ -113,6 +111,16 @@ public final class QueensUI {
 
         Button clear = new Button("Clear grid");
         clear.getStyleClass().add("button-queens");
+        clear.setOnAction(event -> {
+            boardContainer.board.clear();
+            int sideLength = boardContainer.board.sideLength();
+            for (int row = 0; row < sideLength; ++row) {
+                for (int column = 0; column < sideLength; ++column) {
+                    boardContainer.cells[row][column].setStyle("-fx-background-color: white;");
+                    boardContainer.cells[row][column].setGraphic(null);
+                }
+            }
+        });
 
         VBox gameButtonBox = new VBox(20);
         gameButtonBox.setAlignment(Pos.CENTER);
@@ -160,7 +168,6 @@ public final class QueensUI {
                     cell.setStyle("-fx-background-color: "
                             + toRGBString(colorPicker.getValue())
                             + ";");
-                    System.out.println(board);
                 });
             }
         }
