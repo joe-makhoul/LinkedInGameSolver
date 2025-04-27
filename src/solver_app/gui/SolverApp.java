@@ -28,6 +28,4 @@ public final class SolverApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-
 }

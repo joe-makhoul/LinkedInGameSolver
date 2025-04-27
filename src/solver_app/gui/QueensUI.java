@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import solver_app.Solver;
 import solver_app.queens.QueensBoard;
@@ -17,11 +18,7 @@ import java.util.List;
 
 
 public final class QueensUI {
-    private final static int BASE_LENGTH = 420;
-    private static final BoardContainer boardContainer = new BoardContainer();
-    private QueensUI() {}
-
-    private static class BoardContainer {
+    private static class CellManager {
         QueensBoard board;
         Button[][] cells;
 
@@ -30,6 +27,44 @@ public final class QueensUI {
             cells = new Button[sideLength][sideLength];
         }
     }
+
+    private static class QueenIcon {
+
+        GridPane get() {
+            GridPane pane = new GridPane();
+            pane.setAlignment(Pos.CENTER);
+            Rectangle rectangle = new Rectangle(20, 10, Color.DARKSLATEBLUE);
+            Polygon triangle1 = new Polygon();
+            triangle1.getPoints().addAll(
+                    0.0, 0.0,
+                    0.0, 5.0,
+                    5.0, 5.0);
+            Polygon triangle2 = new Polygon();
+            triangle2.getPoints().addAll(
+                    10.0, 0.0,
+                    5.0, 5.0,
+                    15.0, 5.0
+            );
+            Polygon triangle3 = new Polygon();
+            triangle3.getPoints().addAll(
+                    20.0, 0.0,
+                    20.0, 5.0,
+                    15.0, 5.0
+            );
+            triangle1.setFill(Color.DARKSLATEBLUE);
+            triangle2.setFill(Color.DARKSLATEBLUE);
+            triangle3.setFill(Color.DARKSLATEBLUE);
+            pane.add(triangle1, 0, 0);
+            pane.add(triangle2, 1, 0);
+            pane.add(triangle3, 2, 0);
+            pane.add(rectangle, 0, 1, 3, 1);
+            return pane;
+        }
+    }
+
+    private final static int BASE_LENGTH = 420;
+    private static final CellManager cellManager = new CellManager();
+    private QueensUI() {}
 
     public static BorderPane queensBoard() {
         BorderPane main = new BorderPane();
@@ -70,8 +105,8 @@ public final class QueensUI {
         Button spinnerButton = new Button("Confirm size");
         spinnerButton.getStyleClass().add("button-queens");
         spinnerButton.setOnAction(event -> {
-            boardContainer.update(spinner.getValue());
-            createCells(boardPane, boardContainer.board, boardContainer.cells, colorPicker);
+            cellManager.update(spinner.getValue());
+            createCells(boardPane, cellManager.board, cellManager.cells, colorPicker);
             spinnerBox.setVisible(false);
             game.setVisible(true);
         });
@@ -99,12 +134,14 @@ public final class QueensUI {
         Button solve = new Button("Solve grid");
         solve.getStyleClass().add("button-queens");
         solve.setOnAction(event -> {
-            Solver.solve(boardContainer.board);
-            int sideLength = boardContainer.board.sideLength();
+            Solver.solve(cellManager.board);
+            int sideLength = cellManager.board.sideLength();
             for (int row = 0; row < sideLength; ++row) {
                 for (int column = 0; column < sideLength; ++column) {
-                    if (boardContainer.board.isOccupied(row, column))
-                        boardContainer.cells[row][column].setGraphic(new Rectangle(7,7));
+                    if (cellManager.board.isOccupied(row, column)) {
+                        QueenIcon icon = new QueenIcon();
+                        cellManager.cells[row][column].setGraphic(icon.get());
+                    }
                 }
             }
         });
@@ -112,12 +149,12 @@ public final class QueensUI {
         Button clear = new Button("Clear grid");
         clear.getStyleClass().add("button-queens");
         clear.setOnAction(event -> {
-            boardContainer.board.clear();
-            int sideLength = boardContainer.board.sideLength();
+            cellManager.board.clear();
+            int sideLength = cellManager.board.sideLength();
             for (int row = 0; row < sideLength; ++row) {
                 for (int column = 0; column < sideLength; ++column) {
-                    boardContainer.cells[row][column].setStyle("-fx-background-color: white;");
-                    boardContainer.cells[row][column].setGraphic(null);
+                    cellManager.cells[row][column].setStyle("-fx-background-color: white;");
+                    cellManager.cells[row][column].setGraphic(null);
                 }
             }
         });
